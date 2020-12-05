@@ -1,0 +1,34 @@
+Install ffmeg
+    sudo apt update
+    sudo apt install ffmpeg
+    sudo apt install fontconfig libfontconfig1
+
+Try twitchdownloadercli linux - clip
+    bin/linux/TwitchDownloaderCLI -m ClipDownload  -u AmusedRealBatteryShazBotstix --ffmpeg-path "ffmpeg.exe" -o content/vid.mp4
+    bin/linux/TwitchDownloaderCLI -m ChatDownload --id AmusedRealBatteryShazBotstix -o content/chat.json
+    bin/linux/TwitchDownloaderCLI -m ChatRender -i content/chat.json -h 1080 -w 422 --framerate 30 --update-rate 0 --font-size 18 -o content/chat.mp4
+    ffmpeg -i content/vid.mp4 -i content/chat.mp4 -filter_complex "[0:v][1:v]hstack=inputs=2[v]; [0:a][0:a]amerge[a]" -map "[v]" -map "[a]" -ac 2 content/output.mp4
+
+Try twitchdownloadercli linux - vod/video
+    bin/linux/TwitchDownloaderCLI -m VideoDownload  -u 825663186 --ffmpeg-path "ffmpeg.exe" -o content/vid.mp4
+    bin/linux/TwitchDownloaderCLI -m ChatDownload --id 825663186 -o content/chat.json
+    bin/linux/TwitchDownloaderCLI -m ChatRender -i content/chat.json -h 1080 -w 422 --framerate 30 --update-rate 0 --font-size 18 -o content/chat.mp4
+    ffmpeg -i content/vid.mp4 -i content/chat.mp4 -filter_complex "[0:v][1:v]hstack=inputs=2[v]; [0:a][0:a]amerge[a]" -map "[v]" -map "[a]" -ac 2 content/output.mp4
+
+    1h 34min to render the chat vid
+    
+
+
+
+Try twitchdownloadcli windows ------ seems very slow
+    bin/windows/TwitchDownloaderCLI -m ClipDownload  -u AmusedRealBatteryShazBotstix --ffmpeg-path "ffmpeg.exe" -o content/vid.mp4
+    bin/windows/TwitchDownloaderCLI -m ChatDownload --id AmusedRealBatteryShazBotstix -o content/chat.json
+    bin/windows/TwitchDownloaderCLI -m ChatRender -i content/chat.json -h 1080 -w 422 --framerate 30 --update-rate 0 --font-size 18 -o content/chat.mp4
+    bin/windows/ffmpeg -i content/vid.mp4 -i content/chat.mp4 -filter_complex "[0:v][1:v]hstack=inputs=2[v]; [0:a][0:a]amerge[a]" -map "[v]" -map "[a]" -ac 2 content/output.mp4
+
+
+Different failed attempts
+    ffmpeg -i vid.mp4 -i chat.mp4 -filter_complex '[0:v]pad=iw+430:ih[int];[int][1:v]overlay=W-430:0[vid]' -map [vid] -c:v libx264 -crf 23 -preset veryfast final.mp4
+    ffmpeg -i vid.mp4 -i vid.mp4       -filter_complex '[0:v]pad=iw*2:ih[int];[int][1:v]overlay=W/2:0[vid];hstack=inputs=2[v]' -map [vid] -c:v libx264 -crf 23 -preset veryfast -ac 2 output.mp4
+    ffmpeg -i vid.mp4 -i chat.mp4 -filter_complex "[0:v][1:v]hstack=inputs=2[v]; [0:a][0:a]amerge[a]" -map "[v]" -map "[a]" -ac 2 output.mp4
+
