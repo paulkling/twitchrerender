@@ -10,13 +10,27 @@ Try twitchdownloadercli linux - clip
     ffmpeg -i content/vid.mp4 -i content/chat.mp4 -filter_complex "[0:v][1:v]hstack=inputs=2[v]; [0:a][0:a]amerge[a]" -map "[v]" -map "[a]" -ac 2 content/output.mp4
 
 Try twitchdownloadercli linux - vod/video
-    bin/linux/TwitchDownloaderCLI -m VideoDownload  -u 825663186 --ffmpeg-path "ffmpeg.exe" -o content/vid.mp4
-    bin/linux/TwitchDownloaderCLI -m ChatDownload --id 825663186 -o content/chat.json
+    bin/linux/TwitchDownloaderCLI -m VideoDownload  -u 825663186  --ffmpeg-path "ffmpeg.exe" -o content/vid.mp4
+    bin/linux/TwitchDownloaderCLI -m ChatDownload --id 825663186  -o content/chat.json
     bin/linux/TwitchDownloaderCLI -m ChatRender -i content/chat.json -h 1080 -w 422 --framerate 30 --update-rate 0 --font-size 18 -o content/chat.mp4
+    ffmpeg.exe -i content/vid.mp4 -i content/chat.mp4 -filter_complex "[0:v][1:v]hstack=inputs=2[v]; [0:a][0:a]amerge[a]" -map "[v]" -map "[a]" -ac 2 -c:v h264_nvenc -b:v 5M content/output.mp4
+    
+
+
+slow no gpu
     ffmpeg -i content/vid.mp4 -i content/chat.mp4 -filter_complex "[0:v][1:v]hstack=inputs=2[v]; [0:a][0:a]amerge[a]" -map "[v]" -map "[a]" -ac 2 content/output.mp4
+    ffmpeg.exe -i content/vid.mp4 -i content/chat.mp4 -filter_complex "[0:v][1:v]hstack=inputs=2[v]; [0:a][0:a]amerge[a]" -map "[v]" -map "[a]" -ac 2 -c:v h264_nvenc -b:v 5M content/output.mp4
+
+
+CUDA
+    ffmpeg -hwaccel cuda -hwaccel_output_format cuda -i content/vid.mp4 -i content/chat.mp4 -filter_complex "[0:v][1:v]hstack=inputs=2[v]; [0:a][0:a]amerge[a]" -map "[v]" -map "[a]" -ac 2 
+-c:v h264_nvenc -b:v 5M content/output.mp4
+
+ffmpeg -i content/vid.mp4 -i content/chat.mp4 -filter_complex "[0:v][1:v]hstack=inputs=2[v]; [0:a][0:a]amerge[a]" -map "[v]" -map "[a]" -ac 2 -c:v h264_nvenc -b:v 5M content/output.mp4
+
 
     1h 34min to render the chat vid
-    
+
 
 
 
